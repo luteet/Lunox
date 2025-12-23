@@ -21,10 +21,10 @@ module.exports = async (client) => {
     });
 
     setInterval(async () => {
-        const promises = [
+        /* const promises = [
             client.cluster.broadcastEval("this.guilds.cache.size"),
             client.cluster.broadcastEval((c) => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
-        ];
+        ]; */
 
         //const results = await Promise.all(promises);
 
@@ -44,7 +44,7 @@ module.exports = async (client) => {
         const presenceOptions = { activities: [{ type: status[index].type, name: status[index].name }], status: "online" };
 
         client.user.setPresence(presenceOptions);
-    }, 5000);
+    }, 60000);
 
     console.log(`[INFO] ${client.user.username} is ready with ${await client.guilds.cache.size} server`);
 };
