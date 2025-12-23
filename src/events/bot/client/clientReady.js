@@ -26,15 +26,18 @@ module.exports = async (client) => {
             client.cluster.broadcastEval((c) => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
         ];
 
-        const results = await Promise.all(promises);
+        //const results = await Promise.all(promises);
 
-        const servers = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
-        const members = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
+        //const servers = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
+        //const members = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
 
         const status = [
             { type: ActivityType.Playing, name: "/play" },
-            { type: ActivityType.Listening, name: `${members} Users` },
-            { type: ActivityType.Competing, name: `${servers} Servers` },
+            { type: ActivityType.Playing, name: "/воздати-потужного" },
+            { type: ActivityType.Playing, name: "/смеґма" },
+            { type: ActivityType.Playing, name: "/заходить-мужик-в-бар..." },
+            // { type: ActivityType.Listening, name: `${members} Users` },
+            // { type: ActivityType.Competing, name: `${servers} Servers` },
         ];
 
         const index = Math.floor(Math.random() * status.length);

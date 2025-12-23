@@ -1,8 +1,6 @@
-const { EmbedBuilder } = require("discord.js");
+//const { EmbedBuilder } = require("discord.js");
 
 module.exports = async (client, player) => {
-    if (!player) return;
-
     if (player.message) player.message.delete().catch((e) => {});
 
     const channel = await client.channels.cache.get(player.textId);
@@ -24,10 +22,12 @@ module.exports = async (client, player) => {
         player.queue.add(randomTrack);
 
         if (!player.playing) player.play();
-    } else {
+    }/*  else {
         const guildData = client.data.get(`guildData_${player.guildId}`);
 
         if (guildData && guildData.reconnect.status) return;
+
+        await delay(client.config.leaveTimeout);
 
         const embed = new EmbedBuilder()
             .setColor(client.config.embedColor)
@@ -36,8 +36,12 @@ module.exports = async (client, player) => {
         if (channel) await channel.send({ embeds: [embed] });
 
         return player.destroy();
-    }
+    } */
 };
+
+function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 /**
  * Project: Lunox

@@ -1,5 +1,6 @@
 const { EmbedBuilder, MessageFlags } = require("discord.js");
 const { convertTime } = require("../../../functions/timeFormat.js");
+const spotifyMapping = require("../../../settings/spotifyMapping.json");
 
 module.exports = {
     name: "play",
@@ -32,7 +33,19 @@ module.exports = {
             return interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
         }
 
-        const query = interaction.options.getString("query");
+        let query = interaction.options.getString("query");
+
+        if (typeof query === "string" && query.includes("open.spotify.com/track")) {
+            const trackIdMatch = query.match(/open\.spotify\.com\/track\/([^?]+)/);
+            const trackId = trackIdMatch ? trackIdMatch[1] : null;
+
+            if (spotifyMapping[query]) {
+                query = spotifyMapping[query];
+            } else if (trackId && spotifyMapping[trackId]) {
+                query = spotifyMapping[trackId];
+            }
+        }
+
         const result = await client.rainlink.search(query, { requester: interaction.member, sourceID: client.config.lavalinkSource });
 
         if (result.type === "EMPTY" || result.type === "ERROR" || !result.tracks.length) {
@@ -53,9 +66,39 @@ module.exports = {
         }
 
         if (result.type === "PLAYLIST") {
-            for (const track of result.tracks) player.queue.add(track);
+            let addedCount = 0;
 
-            embed.setDescription(`Added **[${result.playlistName}](${query})** - \`${result.tracks.length}\` songs to the queue.`);
+            for (const track of result.tracks) {
+                let finalTrack = track;
+
+                if (track.uri && typeof track.uri === "string" && track.uri.includes("open.spotify.com/track")) {
+                    const trackIdMatch = track.uri.match(/open\.spotify\.com\/track\/([^?]+)/);
+                    const trackId = trackIdMatch ? trackIdMatch[1] : null;
+
+                    let mappedQuery = null;
+                    if (spotifyMapping[track.uri]) {
+                        mappedQuery = spotifyMapping[track.uri];
+                    } else if (trackId && spotifyMapping[trackId]) {
+                        mappedQuery = spotifyMapping[trackId];
+                    }
+
+                    if (mappedQuery) {
+                        try {
+                            const mappedResult = await client.rainlink.search(mappedQuery, { requester: interaction.member });
+                            if (mappedResult && mappedResult.tracks && mappedResult.tracks.length) {
+                                finalTrack = mappedResult.tracks[0];
+                            }
+                        } catch {
+                            finalTrack = track;
+                        }
+                    }
+                }
+
+                player.queue.add(finalTrack);
+                addedCount++;
+            }
+
+            embed.setDescription(`Added **[${result.playlistName}](${query})** - \`${addedCount}\` songs to the queue.`);
         } else {
             const track = result.tracks[0];
             const trackTitle = formatString(track.title, 30).replace(/ - Topic$/, "") || "Unknown";
