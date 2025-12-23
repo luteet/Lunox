@@ -32,10 +32,10 @@ module.exports = {
     rainlinkNodes: [
         {
             name: "Lunox",
-            host: "lavalink-production-6bb4.up.railway.app",
-            port: 443,
+            host: "lavalink.railway.internal",
+            port: 2333,
             auth: process.env.LAVALINK_PASSWORD,
-            secure: true,
+            secure: false,
             driver: "lavalink/v4/koinu",
         },
     ],
