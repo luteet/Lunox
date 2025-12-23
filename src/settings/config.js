@@ -32,10 +32,10 @@ module.exports = {
     rainlinkNodes: [
         {
             name: "Lunox",
-            host: "localhost",
-            port: 2333,
+            host: "lavalink.railway.internal",
+            port: 443,
             auth: "youshallnotpass",
-            secure: false,
+            secure: true,
             driver: "lavalink/v4/koinu", // Available drivers based on your Lavalink version: https://github.com/RainyXeon/Rainlink#-drivers
         },
     ],
