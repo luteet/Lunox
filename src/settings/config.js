@@ -34,9 +34,9 @@ module.exports = {
             name: "Lunox",
             host: "lavalink-production-6bb4.up.railway.app",
             port: 443,
-            auth: "youshallnotpass",
+            auth: process.env.LAVALINK_PASSWORD,
             secure: true,
-            driver: "lavalink/v4/koinu", // Available drivers based on your Lavalink version: https://github.com/RainyXeon/Rainlink#-drivers
+            driver: "lavalink/v4/koinu",
         },
     ],
 };
