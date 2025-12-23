@@ -46,7 +46,7 @@ module.exports = {
             }
         }
 
-        const result = await client.rainlink.search(query, { requester: interaction.member });
+        const result = await client.rainlink.search(query, { requester: interaction.member, sourceID: client.config.lavalinkSource });
 
         if (result.type === "EMPTY" || result.type === "ERROR" || !result.tracks.length) {
             embed.setDescription(`No results found for your query.`);
