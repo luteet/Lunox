@@ -1,4 +1,4 @@
-//const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = async (client, player) => {
     if (player.message) player.message.delete().catch((e) => {});
