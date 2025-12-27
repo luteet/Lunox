@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+//const { EmbedBuilder } = require("discord.js");
 
 module.exports = async (client, player) => {
     if (player.message) player.message.delete().catch((e) => {});
@@ -22,7 +22,7 @@ module.exports = async (client, player) => {
         player.queue.add(randomTrack);
 
         if (!player.playing) player.play();
-    } else {
+    }/*  else {
         const guildData = client.data.get(`guildData_${player.guildId}`);
 
         if (guildData && guildData.reconnect.status) return;
@@ -36,7 +36,7 @@ module.exports = async (client, player) => {
         if (channel) await channel.send({ embeds: [embed] });
 
         return player.destroy();
-    }
+    } */
 };
 
 function delay(ms) {
