@@ -51,7 +51,7 @@ module.exports = {
         if (result.type === "EMPTY" || result.type === "ERROR" || !result.tracks.length) {
             embed.setDescription(`No results found for your query.`);
 
-            return interaction.reply({ embeds: [embed], flags: [MessageFlags.Ephemeral] });
+            if (msg) return msg.edit({ embeds: [embed] });
         }
 
         if (!player) {
@@ -109,8 +109,7 @@ module.exports = {
             embed.setDescription(`Added **[${trackTitle} - ${trackAuthor}](${track.uri})** - \`${convertTime(track.duration)}\`.`);
         }
 
-        await interaction.reply({ embeds: [embed] });
-
+        if (msg) await msg.edit({ embeds: [embed] });
         if (!player.playing) return player.play();
     },
 };

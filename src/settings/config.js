@@ -12,7 +12,6 @@ module.exports = {
     minVolume: parseInt(process.env.MIN_VOLUME) || 1, // min volume
     maxVolume: parseInt(process.env.MAX_VOLUME) || 100, // max volume
     mongoUri: process.env.MONGO_URI || " ", // your MongoDB Uri
-    geniusApiKey: process.env.GENIUS_API_KEY || " ", // your genius api key
     supportServerUrl: process.env.SUPPORT_SERVER_URL || " ", // your support server url
 
     // RAINLINK DETAILS
@@ -31,12 +30,12 @@ module.exports = {
     rainlinkPlugins: [new VoicePlugin()], // rainlink plugins, to add more plugins, just add them to the array. Available plugins: https://github.com/RainyXeon/Rainlink/#-plugins
     rainlinkNodes: [
         {
-            name: "Lunox",
-            host: "lavalink.railway.internal",
-            port: 2333,
-            auth: process.env.LAVALINK_PASSWORD,
-            secure: false,
-            driver: "lavalink/v4/koinu",
+            name: process.env.LAVALINK_NAME || "Lunox",
+            host: process.env.LAVALINK_HOST || "localhost",
+            port: parseInt(process.env.LAVALINK_PORT) || 2333,
+            auth: process.env.LAVALINK_PASSWORD || "youshallnotpass",
+            secure: parseBoolean(process.env.LAVALINK_SECURE || "false"),
+            driver: process.env.LAVALINK_DRIVER || "lavalink/v4/koinu", // Available drivers based on your Lavalink version: https://github.com/RainyXeon/Rainlink#-drivers
         },
     ],
 };
